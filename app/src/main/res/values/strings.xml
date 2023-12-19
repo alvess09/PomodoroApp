@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">PomodoroApp</string>
+    <string name="timer">Timer</string>
+    <string name="tarefas">Tarefas</string>
+    <string name="editar">Editar</string>
+    <string name="configurar">Configurar</string>
+    <string name="perfil">Perfil</string>
+</resources>
