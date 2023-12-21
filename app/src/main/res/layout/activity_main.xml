@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@color/white"
+    tools:context=".presentation.MainActivity">
 
-    <FrameLayout
-        android:id="@+id/frameLayout"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="1dp"
@@ -26,7 +27,7 @@
         app:abb_indicatorAppearance="round"
         app:abb_indicatorHeight="4dp"
         app:abb_indicatorMargin="16dp"
-        app:abb_selectedIndex="1"
+        app:abb_selectedIndex="0"
         app:abb_selectedTabType="text"
         app:abb_tabs="@menu/bottom_nav"
         app:abb_tabColor="@color/redPrimary"
