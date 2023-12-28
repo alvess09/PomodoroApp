@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.PomodoroApp"
         tools:targetApi="31">
+
         <activity
             android:name=".presentation.App"
             android:exported="true">
@@ -21,11 +22,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".domain.Login"
+            android:exported="true">
+        </activity>
         <activity
             android:name=".presentation.MainActivity"
             android:exported="true">
-
         </activity>
 
         <meta-data

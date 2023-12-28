@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
+    <color name="blackTie">#17000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="redPrimary">#F77575</color>
     <color name="redSecondary">#d70f0f</color>

@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">PomodoroApp</string>
+    <string name="timer">Timer</string>
+    <string name="tarefas">Tarefas</string>
+    <string name="editar">Editar</string>
+    <string name="configurar">Configurar</string>
+    <string name="perfil">Perfil</string>
     <string name="titleApp">Pomodoro App</string>
     <string name="title_secondary">Simplificando o seu modo de estudar com foco</string>
+    <string name="cd_background_image">background image</string>
+    <string name="tv_ola">Olá!</string>
+    <string name="tv_bemVindo">Bem Vindo(a)!</string>
+    <string name="tv_facaLogin">Faça seu Login</string>
+    <string name="tv_nome">Nome</string>
+    <string name="tv_email">Email</string>
+    <string name="tv_senha">Senha</string>
+    <string name="tv_btn_login">LOGIN</string>
+    <string name="tv_reset_senha">Esqueçeu sua senha?</string>
+    <string name="tv_cadastre_se">Não tem conta? cadastre-se</string>
 </resources>

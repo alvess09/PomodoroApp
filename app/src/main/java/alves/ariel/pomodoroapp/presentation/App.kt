@@ -1,6 +1,7 @@
 package alves.ariel.pomodoroapp.presentation
 
 import alves.ariel.pomodoroapp.databinding.ActivityAppBinding
+import alves.ariel.pomodoroapp.domain.Login
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -27,13 +28,13 @@ class App : AppCompatActivity() {
     }
 
     private fun nextScreenPost(): View.OnClickListener? {
-        val nextScreen = Intent(this,MainActivity::class.java)
+        val nextScreen = Intent(this,Login::class.java)
         startActivity(nextScreen)
         return null
     }
 
     private fun nextScreen(){
-        val nextScreen = Intent(this,MainActivity::class.java)
+        val nextScreen = Intent(this,Login::class.java)
         //delay para passagem de activity
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(nextScreen)}, 3000)
