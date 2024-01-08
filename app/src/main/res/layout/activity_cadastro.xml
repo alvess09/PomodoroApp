@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whiteOff"
-    tools:context=".domain.Login">
+    tools:context=".domain.Cadastro">
 
     <ImageView
         android:id="@+id/iv_background"
@@ -28,14 +28,14 @@
         tools:ignore="ImageContrastCheck,VisualLintBounds" />
 
     <TextView
-        android:id="@+id/tv_login_ola"
+        android:id="@+id/tv_cadastro_ola"
         android:layout_width="wrap_content"
         android:layout_height="63dp"
         android:layout_marginStart="36dp"
         android:layout_marginTop="78dp"
         android:layout_marginBottom="754dp"
         android:fontFamily="@font/quicksand_medium"
-        android:text="@string/tv_ola"
+        android:text="@string/tv_cadastro_ola"
         android:textColor="@color/black"
         android:textSize="45sp"
         android:textStyle="normal"
@@ -47,12 +47,12 @@
         tools:ignore="TextSizeCheck" />
 
     <TextView
-        android:id="@+id/tv_login_bemVindo"
+        android:id="@+id/tv_title_cadastro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:fontFamily="@font/quicksand_medium"
-        android:text="@string/tv_bemVindo"
+        android:text="@string/tv_crieSuaConta"
         android:textColor="@color/black"
         android:textSize="36sp"
         android:textStyle="normal"
@@ -63,21 +63,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.13999999" />
 
-    <TextView
-        android:id="@+id/tv_login_facaLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/quicksand_medium"
-        android:text="@string/tv_facaLogin"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        android:textStyle="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.205"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_login_bemVindo"
-        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
@@ -85,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:hint="@string/tv_email"
+        android:hint="@string/tv_nome"
         android:textColor="@color/black"
         app:endIconDrawable="@drawable/ic_acount"
         app:endIconMode="custom"
@@ -97,23 +82,54 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.366">
+        app:layout_constraintVertical_bias="0.31">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/it_email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/blackTie"
-
             android:fontFamily="@font/quicksand_medium"
-            android:inputType="textEmailAddress"
+            android:inputType="text"
             android:maxLines="1"
             tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ti_senha"
+        android:id="@+id/ti_cadastro_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:hint="@string/tv_email"
+        android:textColor="@color/black"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/ic_mail"
+        app:endIconTint="@color/white"
+        app:hintAnimationEnabled="true"
+        app:hintTextColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEmail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/blackTie"
+            android:fontFamily="@font/quicksand_medium"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:maxLength="16"
+            tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ti_cadastro_senha"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -128,7 +144,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+        app:layout_constraintTop_toBottomOf="@+id/ti_cadastro_email">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textInputSenha"
@@ -136,26 +152,11 @@
             android:layout_height="match_parent"
             android:background="@color/blackTie"
             android:fontFamily="@font/quicksand_medium"
-            android:maxLines="1"
             android:maxLength="16"
+            android:maxLines="1"
             tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
-        android:id="@+id/tv_reset_senha"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:alpha="0.7"
-        android:fontFamily="@font/quicksand_medium"
-        android:text="@string/tv_reset_senha"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.88"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ti_senha" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -172,95 +173,20 @@
         app:layout_constraintGuide_begin="32dp" />
 
     <Button
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:id="@+id/btn_login"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="32dp"
-        android:text="@string/tv_btn_login"
         android:backgroundTint="@color/yellowSecondary"
+        android:text="@string/tv_btn_cadastrar"
         android:textColor="@color/black"
         android:textStyle="bold"
-        app:icon="@drawable/ic_login"
-        app:iconTint="@color/white"
-        app:iconGravity="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_reset_senha"
+        app:layout_constraintTop_toBottomOf="@+id/ti_cadastro_senha"
         tools:ignore="VisualLintButtonSize" />
-
-    <TextView
-        android:id="@+id/tv_cadastro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:alpha="0.7"
-        android:fontFamily="@font/quicksand_medium"
-        android:text="@string/tv_cadastre_se"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login" />
-
-    <TextView
-        android:id="@+id/tv_entrar_com"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/quicksand_medium"
-        android:text="@string/tv_ou_entre_com"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_cadastro" />
-
-    <ImageView
-        android:id="@+id/iv_btn_google"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginEnd="16dp"
-        android:contentDescription="@string/login_com_conta_google"
-        android:src="@drawable/ic_google"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/iv_btn_facebook"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_entrar_com"
-        app:layout_constraintVertical_bias="0.19"
-        tools:ignore="ImageContrastCheck" />
-
-    <ImageView
-        android:id="@+id/iv_btn_facebook"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:contentDescription="@string/login_com_conta_facebook"
-        android:scaleType="centerInside"
-        android:src="@drawable/ic_facebook"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_entrar_com"
-        app:layout_constraintVertical_bias="0.19" />
-
-    <ImageView
-        android:id="@+id/iv_btn_apple"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="100dp"
-        android:contentDescription="@string/login_com_conta_apple"
-        android:scaleType="centerInside"
-        android:src="@drawable/ic_apple"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_btn_facebook"
-        app:layout_constraintTop_toBottomOf="@+id/tv_entrar_com"
-        app:layout_constraintVertical_bias="0.19"
-        tools:ignore="ImageContrastCheck" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,7 +12,20 @@
           "package_name": "alves.ariel.pomodoroapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "743579531923-18bvs880s0qqa3n3mbf52lgkt9s41bec.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "alves.ariel.pomodoroapp",
+            "certificate_hash": "9f9057e9e28946909a30874b70304c8ddcf80f84"
+          }
+        },
+        {
+          "client_id": "743579531923-t4g5q5ffavotas9ac60pgsn0vllt6eba.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyByO8OWIocmvn3Uv1Beb0_jPV0508ICYuE"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "743579531923-t4g5q5ffavotas9ac60pgsn0vllt6eba.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

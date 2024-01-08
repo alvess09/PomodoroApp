@@ -18,4 +18,8 @@
     <string name="tv_btn_login">LOGIN</string>
     <string name="tv_reset_senha">Esqueçeu sua senha?</string>
     <string name="tv_cadastre_se">Não tem conta? cadastre-se</string>
+    <string name="tv_ou_entre_com">Ou entre com:</string>
+    <string name="login_com_conta_google">Login com conta google</string>
+    <string name="login_com_conta_facebook">login com conta facebook</string>
+    <string name="login_com_conta_apple">login com conta apple</string>
 </resources>
