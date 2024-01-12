@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -25,7 +24,7 @@ class Login : AppCompatActivity() {
 
         binding.btnLogin.setOnClickListener {
             val email:String = binding.itEmail.text.toString()
-            val password:String  = binding.textInputSenha.text.toString()
+            val password:String  = binding.itSenha.text.toString()
 
             Log.d(TAG,"$email and $password")
 
@@ -39,8 +38,9 @@ class Login : AppCompatActivity() {
         }
 
         binding.tvResetSenha.setOnClickListener {
-            TODO()
-            //ResetPassword()
+
+            val email =  binding.itEmail.text.toString()
+            ResetPassword(email)
         }
 
         binding.tvCadastro.setOnClickListener {
@@ -91,7 +91,23 @@ class Login : AppCompatActivity() {
                 }
             }
     }
-    private fun ResetPassword(){}
+    private fun ResetPassword(email: String){
+        if (email.isEmpty()){
+            Toast.makeText(this, "Preencha o campo email e clique em esqueci minha senha para redefinição de senha", Toast.LENGTH_SHORT).show()
+            Log.d(TAG,"Failure to send email message redefinition cause: Email: $email, is Empty.")
+        }else {
+
+            Firebase.auth.sendPasswordResetEmail(email)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(this, "Um email de redefinição de senha foi enviado para $email .", Toast.LENGTH_LONG).show()
+                        Log.d(TAG, "Email sent.")
+                    }
+                }
+
+        }
+
+    }
     private fun LogInWithGoogle(){
         //method logIN
        /* .addOnCompleteListener(this){task ->

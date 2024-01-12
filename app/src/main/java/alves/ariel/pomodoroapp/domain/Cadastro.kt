@@ -13,7 +13,8 @@ import com.google.firebase.auth.auth
 
 class Cadastro : AppCompatActivity() {
     lateinit var binding: ActivityCadastroBinding
-    private lateinit var auth: FirebaseAuth
+    private  var auth: FirebaseAuth = Firebase.auth
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,10 +22,21 @@ class Cadastro : AppCompatActivity() {
         val view = binding.root.also {
             setContentView(it)
         }
-        val auth = Firebase.auth
+
+
+
+        binding.btnCadastro.setOnClickListener {
+
+           val nome = binding.itCadastroNome.text.toString()
+           val email = binding.itCadastroEmail.text.toString()
+           val password = binding.itCadastroSenha.text.toString()
+           ValidForm(nome,email,password)
+
+
+        }
 
     }
-    fun CreateUserwithEmailAndPassword(email:String, password:String){
+    private fun CreateUserwithEmailAndPassword(email:String, password:String){
         auth.createUserWithEmailAndPassword(email,password)
             .addOnCompleteListener(this){task ->
                 if (task.isSuccessful){
@@ -36,9 +48,6 @@ class Cadastro : AppCompatActivity() {
                         "Cadastro realizado com sucesso!",
                         Toast.LENGTH_SHORT,
                     ).show()
-
-                    val i =  Intent(this, Login::class.java)
-                    startActivity(i)
 
                 } else {
                     Log.w(ContentValues.TAG,"createUserWithEmail:failure", task.exception)
@@ -52,5 +61,25 @@ class Cadastro : AppCompatActivity() {
 
 
     }
+    private fun ValidForm(nome: String, email: String, password: String) {
+        if (nome.isEmpty() || email.isEmpty() || password.isEmpty()){
+            Toast.makeText(this,"Preencha todos os campos corretamente",Toast.LENGTH_SHORT).show()
+            Log.d(TAG,"Cadastro Falhou! Nome: $nome, Email: $email, Senha: $password")
+        }else{
+            CreateUserwithEmailAndPassword(email, password)
+            Toast.makeText(this, "Cadastro Efetuado com Sucesso!", Toast.LENGTH_SHORT).show()
+            GoToLoginScreen()
+        }
 
+    }
+
+    private fun GoToLoginScreen() {
+        val i = Intent(this, Login::class.java)
+        startActivity(i)
+    }
+
+    companion object{
+        const val TAG = "FormularioCadastro"
+
+    }
 }

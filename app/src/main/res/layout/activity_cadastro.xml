@@ -30,21 +30,18 @@
     <TextView
         android:id="@+id/tv_cadastro_ola"
         android:layout_width="wrap_content"
-        android:layout_height="63dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="78dp"
-        android:layout_marginBottom="754dp"
         android:fontFamily="@font/quicksand_medium"
         android:text="@string/tv_cadastro_ola"
         android:textColor="@color/black"
-        android:textSize="45sp"
-        android:textStyle="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_title_cadastro"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.036"
+        app:layout_constraintHorizontal_bias="0.034"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="TextSizeCheck" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/tv_title_cadastro"
@@ -85,14 +82,14 @@
         app:layout_constraintVertical_bias="0.31">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/it_email"
+            android:id="@+id/it_cadastro_nome"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/blackTie"
             android:fontFamily="@font/quicksand_medium"
             android:inputType="text"
             android:maxLines="1"
-            tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+            android:textColor="@color/black"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -116,15 +113,15 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputEmail"
+            android:id="@+id/it_cadastro_email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/blackTie"
             android:fontFamily="@font/quicksand_medium"
             android:inputType="textEmailAddress"
             android:maxLines="1"
-            android:maxLength="16"
-            tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+            android:textColor="@color/black"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -147,14 +144,15 @@
         app:layout_constraintTop_toBottomOf="@+id/ti_cadastro_email">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputSenha"
+            android:id="@+id/it_cadastro_senha"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/blackTie"
             android:fontFamily="@font/quicksand_medium"
             android:maxLength="16"
             android:maxLines="1"
-            tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+            android:textColor="@color/black"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -173,7 +171,7 @@
         app:layout_constraintGuide_begin="32dp" />
 
     <Button
-        android:id="@+id/btn_login"
+        android:id="@+id/btn_cadastro"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="55dp"
@@ -188,5 +186,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ti_cadastro_senha"
         tools:ignore="VisualLintButtonSize" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
