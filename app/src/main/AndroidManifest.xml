@@ -20,7 +20,8 @@
         <activity
             android:name=".presentation.App"
             android:exported="true"
-            android:screenOrientation="locked">
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,11 +31,17 @@
         <activity
             android:name=".domain.Login"
             android:exported="true"
-            android:screenOrientation="locked"></activity>
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
+
+        </activity>
         <activity
             android:name=".presentation.MainActivity"
             android:exported="true"
-            android:screenOrientation="locked"></activity>
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
+
+        </activity>
 
         <meta-data
             android:name="preloaded_fonts"

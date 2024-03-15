@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/nav_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="@string/timer"
         android:icon="@drawable/ic_timer"/>
     <item
+        android:id="@+id/nav_tasks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="@string/tarefas"
         android:icon="@drawable/ic_add_task"/>
     <item
+        android:id="@+id/nav_edtasks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="@string/editar"
         android:icon="@drawable/ic_editask"/>
     <item
+        android:id="@+id/nav_settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="@string/configurar"
         android:icon="@drawable/ic_settings"/>
     <item
+        android:id="@+id/nav_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="@string/perfil"
