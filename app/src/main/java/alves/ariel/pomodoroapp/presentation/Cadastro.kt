@@ -1,8 +1,8 @@
-package alves.ariel.pomodoroapp.domain
+package alves.ariel.pomodoroapp.presentation
 
 import alves.ariel.pomodoroapp.databinding.ActivityCadastroBinding
+import alves.ariel.pomodoroapp.domain.Navegacao
 import android.content.ContentValues
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -68,14 +68,10 @@ class Cadastro : AppCompatActivity() {
         }else{
             CreateUserwithEmailAndPassword(email, password)
             Toast.makeText(this, "Cadastro Efetuado com Sucesso!", Toast.LENGTH_SHORT).show()
-            GoToLoginScreen()
+            Navegacao(this).goToLoginScreen()
+            finish()
         }
 
-    }
-
-    private fun GoToLoginScreen() {
-        val i = Intent(this, Login::class.java)
-        startActivity(i)
     }
 
     companion object{

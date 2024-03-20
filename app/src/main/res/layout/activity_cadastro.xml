@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whiteOff"
-    tools:context=".domain.Cadastro">
+    tools:context=".presentation.Cadastro">
 
     <ImageView
         android:id="@+id/iv_background"
@@ -149,6 +149,7 @@
             android:layout_height="match_parent"
             android:background="@color/blackTie"
             android:fontFamily="@font/quicksand_medium"
+            android:inputType="textPassword|textImeMultiLine"
             android:maxLength="16"
             android:maxLines="1"
             android:textColor="@color/black"

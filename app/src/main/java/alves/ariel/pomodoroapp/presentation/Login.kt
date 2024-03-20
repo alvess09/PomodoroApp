@@ -1,8 +1,7 @@
-package alves.ariel.pomodoroapp.domain
+package alves.ariel.pomodoroapp.presentation
 
 import alves.ariel.pomodoroapp.databinding.ActivityLoginBinding
-import alves.ariel.pomodoroapp.presentation.MainActivity
-import android.content.Intent
+import alves.ariel.pomodoroapp.domain.Navegacao
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -10,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+
 
 class Login : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -37,6 +37,8 @@ class Login : AppCompatActivity() {
 
         }
 
+
+
         binding.tvResetSenha.setOnClickListener {
 
             val email =  binding.itEmail.text.toString()
@@ -44,23 +46,24 @@ class Login : AppCompatActivity() {
         }
 
         binding.tvCadastro.setOnClickListener {
-            GoToCadastroScreen()
+            //GoToCadastroScreen()
+            Navegacao(this).goToCadastroScreen()
         }
 
-        binding.ivBtnGoogle.setOnClickListener {
-            TODO()
-            //LogInWithGoogle()
-        }
-
-        binding.ivBtnFacebook.setOnClickListener {
-            TODO()
-            //LogInWithFacebook()
-        }
-
-        binding.ivBtnApple.setOnClickListener {
-            TODO()
-            //LogInWithApple()
-        }
+//        binding.ivBtnGoogle.setOnClickListener {
+//            TODO()
+//            //LogInWithGoogle()
+//        }
+//
+//        binding.ivBtnFacebook.setOnClickListener {
+//            TODO()
+//            //LogInWithFacebook()
+//        }
+//
+//        binding.ivBtnApple.setOnClickListener {
+//            TODO()
+//            //LogInWithApple()
+//        }
 
 
     }
@@ -75,7 +78,8 @@ class Login : AppCompatActivity() {
                     ).show()
                     Log.d(TAG, "signInWithEmail:success")
                     //val user = this.auth.currentUser
-                    GoToHomeScreen()
+                    Navegacao(this).goToHomeScreen()
+                    finish()
 
                 } else {
 
@@ -189,16 +193,7 @@ class Login : AppCompatActivity() {
              }
          } */
     }
-    private fun GoToHomeScreen() {
-        val i = Intent(this, MainActivity::class.java)
-        startActivity(i)
-        finish()
-    }
-    private fun GoToCadastroScreen() {
-        val i = Intent(this, Cadastro::class.java)
-        startActivity(i)
-        finish()
-    }
+
 
 
     companion object{
@@ -211,7 +206,9 @@ class Login : AppCompatActivity() {
         val usuarioAtual = FirebaseAuth.getInstance().currentUser
 
         if (usuarioAtual != null){
-            GoToHomeScreen()
+
+            Navegacao(this).goToHomeScreen()
+            finish()
         }
 
 

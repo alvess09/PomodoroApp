@@ -2,13 +2,11 @@ package alves.ariel.pomodoroapp.presentation
 
 import alves.ariel.pomodoroapp.R
 import alves.ariel.pomodoroapp.databinding.ActivityMainBinding
-import alves.ariel.pomodoroapp.domain.Login
-import alves.ariel.pomodoroapp.presentation.ui.EditTasksFragment
-import alves.ariel.pomodoroapp.presentation.ui.HomeFragment
-import alves.ariel.pomodoroapp.presentation.ui.ProfileFragment
-import alves.ariel.pomodoroapp.presentation.ui.SettingsFragment
-import alves.ariel.pomodoroapp.presentation.ui.TasksFragment
-import android.content.Intent
+import alves.ariel.pomodoroapp.presentation.fragments.EditTasksFragment
+import alves.ariel.pomodoroapp.presentation.fragments.HomeFragment
+import alves.ariel.pomodoroapp.presentation.fragments.ProfileFragment
+import alves.ariel.pomodoroapp.presentation.fragments.SettingsFragment
+import alves.ariel.pomodoroapp.presentation.fragments.TasksFragment
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -33,14 +31,8 @@ class MainActivity : AppCompatActivity() {
             setContentView(it)
         }
 
-        /* binding.btnLogout.setOnClickListener {
-             Logout()
-             GoToLoginScreen()
-
-         }*/
 
 
-        //capturar o clique dos botões de navegação da barra e direcionar para os fragments corretos
 
 
         // Criação dos fragments
@@ -50,65 +42,56 @@ class MainActivity : AppCompatActivity() {
         val settingsFragment = SettingsFragment()
         val profileFragment = ProfileFragment()
 
+
+        //capturar o clique dos botões de navegação da barra e direcionar para os fragments corretos
         bottom_nav = binding.bottomNavigation
         // Configuração do escutador de seleção de tab
-         bottom_nav.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener {
-                    override fun onTabSelected(
-                        lastIndex: Int,
-                        lastTab: AnimatedBottomBar.Tab?,
-                        newIndex: Int,
-                        newTab: AnimatedBottomBar.Tab
-                    ) {
-                        // Troca o fragment de acordo com a tab selecionada
-                        val selectedFragment = when (newIndex) {
-                          0 -> homeFragment
-                          1 -> tasksFragment
-                          2 -> editTasksFragment
-                          3 -> settingsFragment
-                          4 -> profileFragment
-                          else -> null
-                        }
+        bottom_nav.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener {
+            override fun onTabSelected(
+                lastIndex: Int,
+                lastTab: AnimatedBottomBar.Tab?,
+                newIndex: Int,
+                newTab: AnimatedBottomBar.Tab
+            ) {
+                // Troca o fragment de acordo com a tab selecionada
+                val selectedFragment = when (newIndex) {
+                    0 -> homeFragment
+                    1 -> tasksFragment
+                    2 -> editTasksFragment
+                    3 -> settingsFragment
+                    4 -> profileFragment
+                    else -> null
+                }
 
-                        // Realiza a troca do fragment
-                        selectedFragment?.let { goToFragment(it) }
+                // Realiza a troca do fragment
+                selectedFragment?.let { goToFragment(it) }
 
-                        Log.d("bottom_bar", "Selected index: $newIndex, title: ${newTab.title}")
-                    }
+                Log.d("bottom_bar", "Selected index: $newIndex, title: ${newTab.title}")
+            }
 
-                    override fun onTabReselected(index: Int, tab: AnimatedBottomBar.Tab) {
-                        // Código para lidar com a reseleção de um item
-                        Log.d("bottom_bar", "Reselected index: $index, title: ${tab.title}")
-                    }
+            override fun onTabReselected(index: Int, tab: AnimatedBottomBar.Tab) {
+                // Código para lidar com a reseleção de um item
+                Log.d("bottom_bar", "Reselected index: $index, title: ${tab.title}")
+            }
 
 
-         })
-
+        })
 
 
     }
 
     private fun goToFragment(fragment: Fragment) {
+        //faz o gerenciamento dos fragments
         fragmentManager = supportFragmentManager
         fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit()
 
 
     }
 
-    private fun Logout() {
-        Firebase.run { auth.signOut() }
-        Log.d(TAG, "Logout realizado")
-    }
 
-    private fun GoToLoginScreen() {
-        val i = Intent(this, Login::class.java)
-        this.startActivity(i)
-    }
 
-    private companion object {
-        const val TAG = "LogOut"
-    }
+
 
 }
-
 
 

@@ -45,6 +45,9 @@ dependencies {
 
     //appBar Personalizada
     implementation ("nl.joery.animatedbottombar:library:1.1.0")
+    //imageView Arredondada
+    implementation("de.hdodenhof:circleimageview:2.0.0")
+
 
     // Firebase Integração
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))

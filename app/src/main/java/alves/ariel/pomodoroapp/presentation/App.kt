@@ -1,11 +1,11 @@
 package alves.ariel.pomodoroapp.presentation
 
 import alves.ariel.pomodoroapp.databinding.ActivityAppBinding
-import alves.ariel.pomodoroapp.domain.Login
-import android.content.Intent
+import alves.ariel.pomodoroapp.domain.Navegacao
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 
@@ -19,26 +19,34 @@ class App : AppCompatActivity() {
 
         }
 
+        //definir um tempo para passar automatico
+        val btnNextScreen = binding.btnNextScreen
 
-        nextScreen()
-        val btnNextScreen = binding.btnNextScreen.setOnClickListener(){
-            nextScreenPost()
-        }
+        //delay para passagem de activity
+        Handler(Looper.getMainLooper()).postDelayed({
+
+            if (btnNextScreen.isPressed){
+                btnNextScreen.setOnClickListener(){
+                    nextScreenPost()
+                    Log.i("btnProximaTela", "onCreate: Chamando proxima tela")
+                }
+            }else{
+                nextScreenPost()
+                Log.i("btnProximaTela", "onCreate: Chamando proxima tela sem pressionar o botão")
+            }
+
+        }, 3000)
+
 
     }
 
     private fun nextScreenPost(): View.OnClickListener? {
-        val nextScreen = Intent(this,Login::class.java)
-        startActivity(nextScreen)
+        Navegacao(this).goToLoginScreen()
+        finish()
         return null
     }
 
-    private fun nextScreen(){
-        val nextScreen = Intent(this,Login::class.java)
-        //delay para passagem de activity
-        Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(nextScreen)}, 3000)
-    }
+
 
 
 }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whiteOff"
-    tools:context=".domain.Login">
+    tools:context=".presentation.Login">
 
     <ImageView
         android:id="@+id/iv_background"
@@ -136,8 +136,9 @@
             android:layout_height="match_parent"
             android:background="@color/blackTie"
             android:fontFamily="@font/quicksand_medium"
-            android:maxLines="1"
+            android:inputType="textPassword|textImeMultiLine"
             android:maxLength="16"
+            android:maxLines="1"
             tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
 
     </com.google.android.material.textfield.TextInputLayout>
