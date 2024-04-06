@@ -33,6 +33,7 @@ class Login : AppCompatActivity() {
                     .show()
             }else{
                 LogInWithEmailAndPassword(email, password)
+
             }
 
         }

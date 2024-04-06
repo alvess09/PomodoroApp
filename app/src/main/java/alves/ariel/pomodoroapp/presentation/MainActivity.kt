@@ -23,24 +23,29 @@ class MainActivity : AppCompatActivity() {
     private val auth: FirebaseAuth = Firebase.auth
     private lateinit var fragmentManager: FragmentManager
     private lateinit var bottom_nav: AnimatedBottomBar
+    private val fragmentStack = mutableListOf<Fragment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root.also {
-            setContentView(it)
-        }
+        setContentView(binding.root)
 
 
-
-
-
-        // Criação dos fragments
+        // Inicialização dos fragments
         val homeFragment = HomeFragment()
         val tasksFragment = TasksFragment()
         val editTasksFragment = EditTasksFragment()
         val settingsFragment = SettingsFragment()
         val profileFragment = ProfileFragment()
+
+        //Configuração do FragmentManager
+        fragmentManager = supportFragmentManager
+        fragmentManager.beginTransaction().apply {
+            replace(R.id.fragmentContainer,homeFragment)
+            commit()
+        }
+        fragmentStack.add(homeFragment)
+
 
 
         //capturar o clique dos botões de navegação da barra e direcionar para os fragments corretos
@@ -53,18 +58,17 @@ class MainActivity : AppCompatActivity() {
                 newIndex: Int,
                 newTab: AnimatedBottomBar.Tab
             ) {
-                // Troca o fragment de acordo com a tab selecionada
-                val selectedFragment = when (newIndex) {
-                    0 -> homeFragment
-                    1 -> tasksFragment
-                    2 -> editTasksFragment
-                    3 -> settingsFragment
-                    4 -> profileFragment
-                    else -> null
+                // Troca o fragment de acordo com o indice da tab selecionada
+                when (newIndex) {
+                    0 -> showFragment(homeFragment)
+                    1 -> showFragment(tasksFragment)
+                    2 -> showFragment(editTasksFragment)
+                    3 -> showFragment(settingsFragment)
+                    4 -> showFragment(profileFragment)
                 }
 
                 // Realiza a troca do fragment
-                selectedFragment?.let { goToFragment(it) }
+//                selectedFragment?.let { goToFragment(it) }
 
                 Log.d("bottom_bar", "Selected index: $newIndex, title: ${newTab.title}")
             }
@@ -79,17 +83,32 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-
-    private fun goToFragment(fragment: Fragment) {
-        //faz o gerenciamento dos fragments
-        fragmentManager = supportFragmentManager
-        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit()
-
-
+    private fun showFragment(fragment: Fragment) {
+        fragmentManager.beginTransaction().apply {
+            replace(R.id.fragmentContainer, fragment)
+            addToBackStack(null) // Adiciona o fragment à pilha
+            commit()
+        }
+        fragmentStack.add(fragment)
     }
 
-
-
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        if (fragmentStack.size > 1) {
+            // Remove o fragment atual da pilha
+            fragmentStack.removeAt(fragmentStack.size - 1)
+            fragmentManager.popBackStack()
+        } else {
+            super.onBackPressed()
+        }
+    }
+//    private fun goToFragment(fragment: Fragment) {
+//        //faz o gerenciamento dos fragments
+//        this.fragmentManager = supportFragmentManager
+//        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit()
+//
+//
+//    }
 
 
 }

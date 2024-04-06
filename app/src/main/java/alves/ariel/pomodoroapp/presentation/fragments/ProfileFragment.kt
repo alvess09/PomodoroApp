@@ -16,15 +16,12 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 
 
-@Suppress("NAME_SHADOWING")
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var listProfile : ListView
-
     private  var itens:ArrayList<String> = arrayListOf(
         "Histórico",
         "Alterar Senha",
@@ -32,8 +29,6 @@ class ProfileFragment : Fragment() {
         "Pague-me um Café",
         "Privacidade"
     )
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +42,9 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//  TODO() RECEBER DADOS DO USUARIO JÁ PASSADOS NO LOGIN
+//        val usuario = Usuario()
+//        binding.tvNameUser.text = usuario.showNomedeUsuario()
 
         binding.btnLogout.setOnClickListener {
             Logout()

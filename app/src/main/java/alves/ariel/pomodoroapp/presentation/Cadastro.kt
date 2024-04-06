@@ -67,6 +67,8 @@ class Cadastro : AppCompatActivity() {
             Log.d(TAG,"Cadastro Falhou! Nome: $nome, Email: $email, Senha: $password")
         }else{
             CreateUserwithEmailAndPassword(email, password)
+
+
             Toast.makeText(this, "Cadastro Efetuado com Sucesso!", Toast.LENGTH_SHORT).show()
             Navegacao(this).goToLoginScreen()
             finish()
