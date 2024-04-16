@@ -1,6 +1,7 @@
 package alves.ariel.pomodoroapp.presentation.fragments
 
 import alves.ariel.pomodoroapp.R
+import alves.ariel.pomodoroapp.data.Usuario
 import alves.ariel.pomodoroapp.databinding.FragmentProfileBinding
 import alves.ariel.pomodoroapp.domain.Navegacao
 import android.os.Bundle
@@ -43,8 +44,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 //  TODO() RECEBER DADOS DO USUARIO JÁ PASSADOS NO LOGIN
-//        val usuario = Usuario()
-//        binding.tvNameUser.text = usuario.showNomedeUsuario()
+        val usuario = Usuario(requireContext())
+        binding.tvNameUser.text = usuario.listaUsuario()[1].toString()
+        binding.tvEmail.text = usuario.listaUsuario()[2].toString()
+
 
         binding.btnLogout.setOnClickListener {
             Logout()
@@ -73,10 +76,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
                 "Alterar Senha" -> {
                     // Implemente a funcionalidade para quando "Alterar Senha" for clicado
+                    val novaSenha:String = "123456"
+                    usuario.trocaSenhaUsuario(novaSenha)
                     Toast.makeText(requireContext(), "Alterar Senha clicado", Toast.LENGTH_SHORT).show()
                 }
                 "Deletar Conta" -> {
                     // Implemente a funcionalidade para quando "Deletar Conta" for clicado
+
                     Toast.makeText(requireContext(), "Deletar Conta clicado", Toast.LENGTH_SHORT).show()
                 }
                 "Pague-me um Café" -> {

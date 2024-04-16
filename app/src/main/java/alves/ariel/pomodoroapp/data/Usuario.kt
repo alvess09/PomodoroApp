@@ -3,7 +3,6 @@ package alves.ariel.pomodoroapp.data
 import alves.ariel.pomodoroapp.domain.Navegacao
 import android.content.ContentValues.TAG
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
@@ -14,32 +13,25 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.auth.userProfileChangeRequest
 
-class Usuario(val id:String?,
-              private var nome: String,
-              private val email:String,
-              private var senha:String,
-              private var foto:Drawable,
-              private val context: Context){
-
+class Usuario(private val context: Context){
     private val user = Firebase.auth.currentUser
+    private var nome: String? = "Usuário"
+     fun listaUsuario(): ArrayList<String?> {
+
+        val id: String? = user?.uid
+        val nome: String? = nome
+        val email: String? = user?.email
+        val foto: Uri? = user?.photoUrl
+       return arrayListOf( id, nome, email, foto.toString() )
+     }
 
 
-    private fun listaUsuario(): String {
-        return " Nome:${nome}, Email: $email "
-    }
-
-    private fun setNomeUsuario():String{
-        return nome
-    }
-    private fun trocaNomeUsuario(nomeNovo:String):String{
+     fun trocaNomeUsuario(nomeNovo:String):String{
 
         return nomeNovo.also { this.nome = it }
+    }
 
-    }
-    private fun setEmailUsuario():String{
-        return email
-    }
-    private fun trocaEmailUsuario(emailNovo: String) {
+     fun trocaEmailUsuario(emailNovo: String) {
 
         //TODO() implementar verificação de email existente e só alterar se o novo email estiver de acordo
 
@@ -53,7 +45,7 @@ class Usuario(val id:String?,
 
     }
 
-    private  fun trocaSenhaUsuario(senhaNova:String) {
+     fun trocaSenhaUsuario(senhaNova:String) {
         //TODO() implementar validações sobre a nova senha
 
         user!!.updatePassword(senhaNova)
@@ -65,10 +57,20 @@ class Usuario(val id:String?,
             }
     }
 
-    private fun setFotoUsuario():Drawable {
-        return foto
+    private fun setFotoUsuario(): Uri? {
+        val fotoPadrao:Uri? = user?.photoUrl
+        var fotoAtual: Uri? = null
+
+        if (fotoPadrao == null){
+            // não altera a foto atual
+        }else{
+            //recupera a foto do banco de dados
+            fotoAtual = user!!.photoUrl!!
+        }
+        return fotoAtual
     }
-    private fun mudarFotoUsuario(novaFoto:Uri){
+
+     fun trocaFotoUsuario(novaFoto:Uri){
         val profileUpdates = userProfileChangeRequest {
             photoUri = Uri.parse("novaFoto")
         }
@@ -82,7 +84,7 @@ class Usuario(val id:String?,
             }
     }
 
-    private fun deletarConta(){
+     fun deletarConta(){
         val user = Firebase.auth.currentUser!!
 
         user.delete()

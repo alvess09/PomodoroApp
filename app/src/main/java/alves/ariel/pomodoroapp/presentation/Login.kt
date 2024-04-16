@@ -1,5 +1,6 @@
 package alves.ariel.pomodoroapp.presentation
 
+import alves.ariel.pomodoroapp.data.Usuario
 import alves.ariel.pomodoroapp.databinding.ActivityLoginBinding
 import alves.ariel.pomodoroapp.domain.Navegacao
 import android.os.Bundle
@@ -13,7 +14,7 @@ import com.google.firebase.auth.auth
 
 class Login : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private  val auth: FirebaseAuth = Firebase.auth
+    private val auth: FirebaseAuth = Firebase.auth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -23,15 +24,15 @@ class Login : AppCompatActivity() {
 
 
         binding.btnLogin.setOnClickListener {
-            val email:String = binding.itEmail.text.toString()
-            val password:String  = binding.itSenha.text.toString()
+            val email: String = binding.itEmail.text.toString()
+            val password: String = binding.itSenha.text.toString()
 
-            Log.d(TAG,"$email and $password")
+            Log.d(TAG, "$email and $password")
 
-            if (email.isEmpty() || password.isEmpty()){
+            if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(baseContext, "Preencha os campos: Email e Senha", Toast.LENGTH_SHORT)
                     .show()
-            }else{
+            } else {
                 LogInWithEmailAndPassword(email, password)
 
             }
@@ -42,7 +43,7 @@ class Login : AppCompatActivity() {
 
         binding.tvResetSenha.setOnClickListener {
 
-            val email =  binding.itEmail.text.toString()
+            val email = binding.itEmail.text.toString()
             ResetPassword(email)
         }
 
@@ -68,10 +69,11 @@ class Login : AppCompatActivity() {
 
 
     }
-    private fun LogInWithEmailAndPassword(email:String, password:String){
+
+    private fun LogInWithEmailAndPassword(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this){task ->
-                if (task.isSuccessful){
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
                     Toast.makeText(
                         baseContext,
                         "Login realizado com sucesso!",
@@ -90,84 +92,45 @@ class Login : AppCompatActivity() {
                         Toast.LENGTH_SHORT,
                     ).show()
 
-                    Log.w(TAG,"signInWithEmail:failure", task.exception)
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
 
 
                 }
             }
     }
-    private fun ResetPassword(email: String){
-        if (email.isEmpty()){
-            Toast.makeText(this, "Preencha o campo email e clique em esqueci minha senha para redefinição de senha", Toast.LENGTH_SHORT).show()
-            Log.d(TAG,"Failure to send email message redefinition cause: Email: $email, is Empty.")
-        }else {
 
+    //REDEFINE SENHA ESQUECIDA ATRAVÉS DE EMAIL DE CONFIRMAÇÃO
+    private fun ResetPassword(email: String) {
+        //verfificar se  email digitado é igual a email do banco de dados
+        val user = Usuario(context = this)
+        if (email.isEmpty()) {
+            Toast.makeText(
+                this,
+                "Preencha o campo email e clique em esqueci minha senha para redefinição de senha",
+                Toast.LENGTH_SHORT
+            ).show()
+            Log.d(TAG, "Failure to send email message redefinition cause: Email: $email, is Empty.")
+        }else if (email == user.listaUsuario()[2].toString()){
+            //TODO()  Preciso encontrar um método de verificar se o email digitado é válido no console do firebase
+            Toast.makeText(this, "Email inválido cadastre-se ", Toast.LENGTH_SHORT).show()
+        }
+        else{
             Firebase.auth.sendPasswordResetEmail(email)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Toast.makeText(this, "Um email de redefinição de senha foi enviado para $email .", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this,
+                            "Um email de redefinição de senha foi enviado para $email .",
+                            Toast.LENGTH_LONG
+                        ).show()
                         Log.d(TAG, "Email sent.")
                     }
                 }
-
         }
 
     }
-    private fun LogInWithGoogle(){
-        //method logIN
-       /* .addOnCompleteListener(this){task ->
-            if (task.isSuccessful){
-                Toast.makeText(
-                    baseContext,
-                    "Login realizado com sucesso!",
-                    Toast.LENGTH_SHORT,
-                ).show()
-                Log.d(TAG, "signInWithEmail:success")
-                //val user = this.auth.currentUser
-                GoToHomeScreen()
 
-            } else {
-
-                Toast.makeText(
-                    baseContext,
-                    "Email ou Senha Inválidos",
-                    Toast.LENGTH_SHORT,
-                ).show()
-
-                Log.w(TAG,"signInWithEmail:failure", task.exception)
-
-
-            }
-        } */
-    }
-    private fun LogInWithFacebook(){
-        //method logIN
-        /* .addOnCompleteListener(this){task ->
-             if (task.isSuccessful){
-                 Toast.makeText(
-                     baseContext,
-                     "Login realizado com sucesso!",
-                     Toast.LENGTH_SHORT,
-                 ).show()
-                 Log.d(TAG, "signInWithEmail:success")
-                 //val user = this.auth.currentUser
-                 GoToHomeScreen()
-
-             } else {
-
-                 Toast.makeText(
-                     baseContext,
-                     "Email ou Senha Inválidos",
-                     Toast.LENGTH_SHORT,
-                 ).show()
-
-                 Log.w(TAG,"signInWithEmail:failure", task.exception)
-
-
-             }
-         } */
-    }
-    private fun LogInWithApple(){
+    private fun LogInWithGoogle() {
         //method logIN
         /* .addOnCompleteListener(this){task ->
              if (task.isSuccessful){
@@ -195,9 +158,64 @@ class Login : AppCompatActivity() {
          } */
     }
 
+    private fun LogInWithFacebook() {
+        //method logIN
+        /* .addOnCompleteListener(this){task ->
+             if (task.isSuccessful){
+                 Toast.makeText(
+                     baseContext,
+                     "Login realizado com sucesso!",
+                     Toast.LENGTH_SHORT,
+                 ).show()
+                 Log.d(TAG, "signInWithEmail:success")
+                 //val user = this.auth.currentUser
+                 GoToHomeScreen()
+
+             } else {
+
+                 Toast.makeText(
+                     baseContext,
+                     "Email ou Senha Inválidos",
+                     Toast.LENGTH_SHORT,
+                 ).show()
+
+                 Log.w(TAG,"signInWithEmail:failure", task.exception)
 
 
-    companion object{
+             }
+         } */
+    }
+
+    private fun LogInWithApple() {
+        //method logIN
+        /* .addOnCompleteListener(this){task ->
+             if (task.isSuccessful){
+                 Toast.makeText(
+                     baseContext,
+                     "Login realizado com sucesso!",
+                     Toast.LENGTH_SHORT,
+                 ).show()
+                 Log.d(TAG, "signInWithEmail:success")
+                 //val user = this.auth.currentUser
+                 GoToHomeScreen()
+
+             } else {
+
+                 Toast.makeText(
+                     baseContext,
+                     "Email ou Senha Inválidos",
+                     Toast.LENGTH_SHORT,
+                 ).show()
+
+                 Log.w(TAG,"signInWithEmail:failure", task.exception)
+
+
+             }
+         } */
+    }
+
+
+    companion object {
         const val TAG = "LoginWithEmail"
     }
 
@@ -206,7 +224,7 @@ class Login : AppCompatActivity() {
 
         val usuarioAtual = FirebaseAuth.getInstance().currentUser
 
-        if (usuarioAtual != null){
+        if (usuarioAtual != null) {
 
             Navegacao(this).goToHomeScreen()
             finish()
@@ -214,8 +232,6 @@ class Login : AppCompatActivity() {
 
 
     }
-
-
 
 
 }
