@@ -43,20 +43,23 @@ android {
 
 dependencies {
 
-    //appBar Personalizada
+
+    //AppBar Personalizada https://github.com/Droppers/AnimatedBottomBar
     implementation ("nl.joery.animatedbottombar:library:1.1.0")
-    //imageView Arredondada
+    //CircularProgressBar https://github.com/lopspower/CircularProgressBar
+    implementation ("com.mikhaellopez:circularprogressbar:3.1.0")
+    //imageView Arredondada https://github.com/hdodenhof/CircleImageView
     implementation("de.hdodenhof:circleimageview:2.0.0")
 
 
     // Firebase Integração
-    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-database")
 
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:1.13.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")

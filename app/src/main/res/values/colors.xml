@@ -8,5 +8,6 @@
     <color name="yellowPrimary">#58d301</color>
     <color name="yellowSecondary">#93DD71</color>
     <color name="whiteOff">#E4E1E1</color>
+    <color name="whiteOffBtn">#03dac5</color>
     <color name="font_settings">#99000000</color>
 </resources>
