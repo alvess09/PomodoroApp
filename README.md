@@ -10,7 +10,7 @@ App de auxilio em Estudos e tarefas com técnica Pomodoro (Desenvolvido em kotli
 3. Configure o tempo do seu jeito.
 4. habilite o tema escuro.
 5. deixe o aparelho sempre ligado.
-6. desabilite as notificações se dessejar.
+6. desabilite as notificações se desejar.
    
   
 ***Esse App é Open-Source, e foi feito exclusivamente para a comunidade de estudantes ou profissionais de tecnologia e afins*** 
@@ -39,6 +39,7 @@ ou que estão ansiosas porque não conseguem organizar suas atividades.
 3. AnimatedBottomBar - https://github.com/Droppers/AnimatedBottomBar
 4. Firebase - Authentication & Analitics  https://firebase.google.com/?hl=pt-br
 5. Circle Image View - https://github.com/hdodenhof/CircleImageView
+6. CircularProgressBar https://github.com/lopspower/CircularProgressBar
 
 
 ***Deus seja louvado*** 
