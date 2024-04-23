@@ -3,6 +3,7 @@ package alves.ariel.pomodoroapp.presentation.fragments
 import alves.ariel.pomodoroapp.databinding.FragmentHomeBinding
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container,false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -32,17 +33,19 @@ class HomeFragment : Fragment() {
         val btnPausaCurta = binding.btnPausaCurta
         val btnPausaLonga = binding.btnPausaLonga
         val displayContador = binding.tvTimer
-        val displayTarefa = binding.tvTask
 
 
+        //DEFINE TAREFA DO POMODORO
+        //TODO() CRIAR MÉTODO PARA DEFINFIR TAREFAS E MOSTRÁ-LAS EM TELA
 
 
-        // TODO() CRIAR O TIMER POMODORO
-        var tempoPomodoroDefault:Int = 30
+        // CRIA O TIMER POMODORO
+        var tempoPomodoroDefault: Int = 30
 
-        // TODO() CRIAR AS FUNÇÕES DE CONFIGURAR OS TIMERS
+        // DEFINE O TEMPO PADRÃO DOS TIMERS POMODORO =
         btnPomodoro.setOnClickListener {
             tempoPomodoroDefault = defineTempoDefault(30)
+
         }
         btnPausaCurta.setOnClickListener {
             tempoPomodoroDefault = defineTempoDefault(5)
@@ -52,28 +55,37 @@ class HomeFragment : Fragment() {
         }
 
 
+        defineTempoDefault(tempoPomodoroDefault)
 
-
-        displayContador.text = "$tempoPomodoroDefault:00"
-        val minutosDefault:Int = 60
-        val milissegundosDefault:Int = 1000 // =  1 segundo
+        val minutosDefault: Int = 60
+        val milissegundosDefault: Int = 1000 // =  1 segundo
         var tempoEmMilissegundos = tempoPomodoroDefault * minutosDefault * milissegundosDefault // (tempo padrão = 30,5,15 minutos) convertidos em milissegundos
         val intervalo = milissegundosDefault.toLong() // intervalo de tempo em milissegundos (1 segundo)
-        var contador = object: CountDownTimer(tempoEmMilissegundos.toLong(), intervalo) {
+
+        // CRIA O CONTADOR
+
+        var contador = object : CountDownTimer(tempoEmMilissegundos.toLong(), intervalo) {
             override fun onTick(millisUntilFinished: Long) {
                 val segundosRestantes = millisUntilFinished / 1000
                 val minutos = segundosRestantes / 60
                 val segundos = segundosRestantes % 60
-                val tempoRestante:String = "$minutos:$segundos"
+                val tempoRestante: String = String.format("%02d:%02d", minutos, segundos)
+
 
                 //define o timer na tela
                 displayContador.text = tempoRestante
                 println("Tempo restante: $minutos minutos e $segundos segundos")
+
+                // Atualiza o progresso da barra circular
+                val progresso =
+                    ((tempoEmMilissegundos - millisUntilFinished).toFloat() / tempoEmMilissegundos.toFloat()) * 100
+                atualizaProgresso(progresso)
+                Log.i("Contador", "onTick: $progresso")
             }
 
             override fun onFinish() {
                 Toast.makeText(requireContext(), "Pomodoro Concluído!", Toast.LENGTH_SHORT).show()
-                 println("Contagem regressiva terminada!")
+                println("Contagem regressiva terminada!")
             }
         }
 
@@ -86,56 +98,33 @@ class HomeFragment : Fragment() {
         btnStop.setOnClickListener {
             contador.cancel()
             defineTempoDefault(tempoPomodoroDefault)
-        }
-
-
-
-
-        //TODO() CRIAR O TIMER POMODORO
-        val circularProgressBar = binding.circularProgressBar
-        circularProgressBar.onProgressChangeListener = { progress ->
-            // Do something
-        }
-        circularProgressBar.apply {
-            // Set Progress
-            //progress = 65f
-            // or with animation
-            setProgressWithAnimation(65f, 1000) // =1s
-
-            // Set Progress Max
-            progressMax = 100f
-
-            // Set ProgressBar Color
-            //progressBarColor = Color.BLACK
-            // or with gradient
-            //progressBarColorStart = Color.GRAY
-            //progressBarColorEnd = Color.RED
-            //progressBarColorDirection = CircularProgressBar.GradientDirection.TOP_TO_BOTTOM
-
-            // Set background ProgressBar Color
-            //backgroundProgressBarColor = Color.GRAY
-            // or with gradient
-            //backgroundProgressBarColorStart = Color.WHITE
-            //backgroundProgressBarColorEnd = Color.RED
-            //backgroundProgressBarColorDirection = CircularProgressBar.GradientDirection.TOP_TO_BOTTOM
-
-            // Set Width
-            //progressBarWidth = 7f // in DP
-            //backgroundProgressBarWidth = 3f // in DP
-
-            // Other
-            //roundBorder = true
-            //startAngle = 180f
-            //progressDirection = CircularProgressBar.ProgressDirection.TO_RIGHT
+            atualizaProgresso(0f)
         }
 
 
     }
-    private fun defineTempoDefault(tempo:Int):Int {
+
+    fun defineTarefa(task: String) {
+        /*TODO() RECEBER O PRIMEIRO ELEMENTO DE UMA LISTA DE TAREFAS E LISTAR NA SEQUENCIA 1 POR VEZ
+        *  QUANDO A TAREFA FOR CONCLUÍDA MARCAR CHECKED NA LISTA E PASSAR PARA A PRÓXIMA */
+        val displayTarefa = binding.tvTask
+        displayTarefa.text = task
+    }
+
+    fun defineTempoDefault(tempo: Int): Int {
         val tempoPomodoroDefault = tempo
-        binding.tvTimer.text = "$tempoPomodoroDefault:00"
+        binding.tvTimer.text = String.format("%02d:00", tempoPomodoroDefault)
+        Log.d("defineTempoDefault", "defineTempoDefault: $tempoPomodoroDefault")
         return tempoPomodoroDefault
     }
+
+    private fun atualizaProgresso(progresso: Float) {
+        val circularProgressBar = binding.circularProgressBar
+        //circularProgressBar.setProgressWithAnimation(progresso, 1000)
+        circularProgressBar.progress = progresso
+
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
