@@ -2,11 +2,11 @@ package alves.ariel.pomodoroapp.presentation
 
 import alves.ariel.pomodoroapp.R
 import alves.ariel.pomodoroapp.databinding.ActivityMainBinding
-import alves.ariel.pomodoroapp.presentation.fragments.EditTasksFragment
-import alves.ariel.pomodoroapp.presentation.fragments.HomeFragment
-import alves.ariel.pomodoroapp.presentation.fragments.ProfileFragment
-import alves.ariel.pomodoroapp.presentation.fragments.SettingsFragment
-import alves.ariel.pomodoroapp.presentation.fragments.TasksFragment
+import alves.ariel.pomodoroapp.presentation.edit.EditTasksFragment
+import alves.ariel.pomodoroapp.presentation.home.HomeFragment
+import alves.ariel.pomodoroapp.presentation.profile.ProfileFragment
+import alves.ariel.pomodoroapp.presentation.settings.SettingsFragment
+import alves.ariel.pomodoroapp.presentation.tasks.TasksFragment
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity

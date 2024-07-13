@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whiteOff"
-    tools:context=".presentation.Login">
+    tools:context=".presentation.login.Login">
 
     <ImageView
         android:id="@+id/iv_background"

@@ -15,7 +15,7 @@
         android:theme="@style/Base.Theme.PomodoroApp"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.Cadastro"
+            android:name=".presentation.cadastro.Cadastro"
             android:exported="false" />
         <activity
             android:name=".presentation.App"
@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.Login"
+            android:name=".presentation.login.Login"
             android:exported="true"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">

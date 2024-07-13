@@ -1,4 +1,4 @@
-package alves.ariel.pomodoroapp.presentation.fragments
+package alves.ariel.pomodoroapp.presentation.edit
 
 import alves.ariel.pomodoroapp.databinding.FragmentEditTasksBinding
 import android.os.Bundle

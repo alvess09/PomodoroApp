@@ -1,4 +1,4 @@
-package alves.ariel.pomodoroapp.presentation
+package alves.ariel.pomodoroapp.presentation.login
 
 import alves.ariel.pomodoroapp.data.Usuario
 import alves.ariel.pomodoroapp.databinding.ActivityLoginBinding

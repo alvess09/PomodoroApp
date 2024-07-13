@@ -1,4 +1,4 @@
-package alves.ariel.pomodoroapp.presentation.fragments
+package alves.ariel.pomodoroapp.presentation.profile
 
 import alves.ariel.pomodoroapp.R
 import alves.ariel.pomodoroapp.data.Usuario

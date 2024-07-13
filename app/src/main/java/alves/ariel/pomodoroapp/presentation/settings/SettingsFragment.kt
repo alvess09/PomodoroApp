@@ -1,4 +1,4 @@
-package alves.ariel.pomodoroapp.presentation.fragments
+package alves.ariel.pomodoroapp.presentation.settings
 
 import alves.ariel.pomodoroapp.databinding.FragmentSettingsBinding
 import android.os.Bundle

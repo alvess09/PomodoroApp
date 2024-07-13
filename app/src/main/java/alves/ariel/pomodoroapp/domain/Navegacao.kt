@@ -1,8 +1,8 @@
 package alves.ariel.pomodoroapp.domain
 
-import alves.ariel.pomodoroapp.presentation.Cadastro
-import alves.ariel.pomodoroapp.presentation.Login
 import alves.ariel.pomodoroapp.presentation.MainActivity
+import alves.ariel.pomodoroapp.presentation.cadastro.Cadastro
+import alves.ariel.pomodoroapp.presentation.login.Login
 import android.content.Context
 import android.content.Intent
 

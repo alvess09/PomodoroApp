@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.fragments.HomeFragment">
+    android:background="@color/whiteOff"
+    tools:context=".presentation.home.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/tv_task"
-        android:layout_width="410dp"
+        android:layout_width="0dp"
         android:layout_height="107dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
@@ -51,7 +52,6 @@
         android:layout_marginStart="120dp"
         android:layout_marginTop="24dp"
         android:backgroundTint="@color/whiteOffBtn"
-        app:tint="@color/black"
         android:clickable="true"
         android:soundEffectsEnabled="true"
         android:src="@drawable/ic_play"
@@ -59,7 +59,7 @@
         app:borderWidth="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/circularProgressBar"
-         />
+        app:tint="@color/black" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_stop"
@@ -145,44 +145,46 @@
     <Button
         android:id="@+id/btn_pomodoro"
         style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="236dp"
+        android:layout_width="121dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="2dp"
         android:backgroundTint="@color/redPrimary"
         android:text="POMODORO"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_pausa_curta"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/circularProgressBar"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/fab_play" />
 
     <Button
         android:id="@+id/btn_pausa_curta"
         style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginStart="4dp"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
         android:backgroundTint="@color/redPrimary"
         android:text="PAUSA CURTA"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/btn_pomodoro"
         app:layout_constraintEnd_toStartOf="@+id/btn_pausa_longa"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btn_pomodoro"
         app:layout_constraintTop_toTopOf="@+id/btn_pomodoro" />
 
     <Button
         android:id="@+id/btn_pausa_longa"
         style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginStart="4dp"
+        android:layout_width="137dp"
+        android:layout_height="52dp"
+        android:layout_marginEnd="2dp"
         android:backgroundTint="@color/redPrimary"
         android:text="PAUSA LONGA"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/btn_pausa_curta"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btn_pausa_curta"
         app:layout_constraintTop_toTopOf="@+id/btn_pausa_curta" />
 
