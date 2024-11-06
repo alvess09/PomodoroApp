@@ -5,6 +5,7 @@ import alves.ariel.pomodoroapp.presentation.home.EstadoTimer.PAUSA_LONGA
 import alves.ariel.pomodoroapp.presentation.home.EstadoTimer.POMODORO
 import android.annotation.SuppressLint
 import android.os.CountDownTimer
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,24 +22,53 @@ enum class EstadoTimer {
     PAUSA_LONGA
 }
 
-class HomeViewModel : ViewModel() {
+interface TimerListener {
+    fun onTimerFinished(estado: EstadoTimer)
+}
+
+class HomeViewModel : ViewModel(), TimerListener {
 
     private val timer = Timer()
     private val _estadoPomodoro = MutableLiveData(0)
     private val _tempoRestante = MutableLiveData<String>()
-    val tempoRestante: LiveData<String> = _tempoRestante
-    private val _progresso = MutableLiveData<Float>(0f)
-    val progresso: LiveData<Float> = _progresso
-    val estadoPomodoro: LiveData<Int> = _estadoPomodoro
+    private val _progresso = MutableLiveData(0f)
     private var estadoAtual = POMODORO
-    var pomodorosConcluidos = 0
     private val pomodoro = timer._pomodoro
     private val pausaCurta = timer._pausaCurta
     private val pausaLonga = timer._pausaLonga
+    val tempoRestante: LiveData<String> = _tempoRestante
+    val progresso: LiveData<Float> = _progresso
+    val estadoPomodoro: LiveData<Int> = _estadoPomodoro
+    var pomodorosConcluidos = 0
     var _contador: CountDownTimer? = null
     var tempoInicial = pomodoro
+    var listener: TimerListener? = null
 
 
+
+    override fun onTimerFinished(estado: EstadoTimer) {
+        when (estado) {
+            POMODORO -> {
+                pomodorosConcluidos++
+                if(pomodorosConcluidos%4==0) {
+                    estadoAtual = PAUSA_LONGA
+                    pausaLonga()
+                } else {
+                    estadoAtual = PAUSA_CURTA
+                    pausaCurta()
+                }
+            }
+            PAUSA_CURTA -> {
+                estadoAtual = POMODORO
+                pomodoro()
+            }
+            PAUSA_LONGA -> {
+                estadoAtual = POMODORO
+                pomodoro()
+                pomodorosConcluidos = 0
+            }
+        }
+    }
 
     // Função para criar um novo contador
     private fun criarContador(tempoEmMilissegundos: Long): CountDownTimer {
@@ -60,35 +90,8 @@ class HomeViewModel : ViewModel() {
             }
 
             override fun onFinish() {
-
-                when (estadoAtual) {
-                    POMODORO -> {
-                        pomodorosConcluidos++
-                        if (pomodorosConcluidos % 4 == 0) {
-                            estadoAtual = PAUSA_LONGA
-                            pausaLonga()
-
-                        } else {
-                            estadoAtual = PAUSA_CURTA
-                            pausaCurta()
-                        }
-                    }
-
-                    PAUSA_CURTA -> {
-                        estadoAtual = POMODORO
-                        pomodoro()
-
-                    }
-                    PAUSA_LONGA -> {
-                        estadoAtual = POMODORO
-                        pomodoro()
-                        pomodorosConcluidos = 0 //Reinicia o contador após uma pausa longa
-                    }
-
-
-                }
-
-
+                listener?.onTimerFinished(estadoAtual)
+                Log.d("HomeViewModel", "Estado do timer antes de chamar o listener: $estadoAtual")
             }
 
 
@@ -115,6 +118,7 @@ class HomeViewModel : ViewModel() {
         defineTimer(pausaCurta)
         tempoInicial = pausaCurta
         _estadoPomodoro.value = 1
+        Log.d("HomeViewModel", "Estado do timer: $estadoAtual")
     }
 
     fun pausaLonga() {
@@ -122,6 +126,8 @@ class HomeViewModel : ViewModel() {
         tempoInicial = pausaLonga
         _estadoPomodoro.value = 2
     }
+
+
 
 
 }

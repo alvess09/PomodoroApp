@@ -1,17 +1,27 @@
 package alves.ariel.pomodoroapp.presentation.home
 
+import alves.ariel.pomodoroapp.R
 import alves.ariel.pomodoroapp.databinding.FragmentHomeBinding
+import android.Manifest.permission.POST_NOTIFICATIONS
 import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), TimerListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -31,12 +41,13 @@ class HomeFragment : Fragment() {
 
     }
 
-    @SuppressLint("DefaultLocale")
+    @SuppressLint("DefaultLocale", "SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         contador = viewModel._contador
+        createNotificationChannel()
 
-
+        viewModel.listener = this
 
         // Inicia o contador com o tempo padrão do btnPomodoro
         viewModel.pomodoro()
@@ -54,18 +65,33 @@ class HomeFragment : Fragment() {
         }
 
         viewModel.estadoPomodoro.observe(viewLifecycleOwner) { novoEstado ->
-            Log.d("estadoPomodoro", "Estado Pomodoro: $novoEstado Pomodoros concluídos: ${viewModel.pomodorosConcluidos}")
-            when(novoEstado){
-                0 -> {binding.tvTask.text = "Pomodoro ${viewModel.pomodorosConcluidos + 1}º"
+            Log.d(
+                "estadoPomodoro",
+                "Estado Pomodoro: $novoEstado Pomodoros concluídos: ${viewModel.pomodorosConcluidos}"
+            )
+//
+            val tituloTimerPausaCurta = getString(R.string.pausa_curta)
+            val tituloTimerPausaLonga = getString(R.string.pausa_longa)
+
+            when (novoEstado) {
+                0 -> {
+                    binding.tvTask.text = "Pomodoro${
+                        viewModel
+                            .pomodorosConcluidos + 1
+                    }º"
                     configuraTempoInicialTela()
                 }
+
                 1 -> {
-                    binding.tvTask.text = "Pausa Curta"
+                    binding.tvTask.text = tituloTimerPausaCurta
                     configuraTempoInicialTela()
+
                 }
+
                 2 -> {
-                    binding.tvTask.text = "Pausa Longa"
+                    binding.tvTask.text = tituloTimerPausaLonga
                     configuraTempoInicialTela()
+
                 }
             }
         }
@@ -143,6 +169,58 @@ class HomeFragment : Fragment() {
         binding.tvTimer.text = tempoFormatado
         Log.i("tempo em tela", "configuraTempoInicialTela: $tempoFormatado")
     }
+
+    override fun onTimerFinished(estado: EstadoTimer) {
+        val tituloNotificacao = getString(R.string.titulo_notificacao)
+        val textoNotificacaoPausaCurta = getString(R.string.texto_notificacao)
+        val textoNotificacaoPausaLonga = getString(R.string.texto_notificacao_pl)
+        when (estado) {
+            EstadoTimer.PAUSA_CURTA -> notificar(tituloNotificacao, textoNotificacaoPausaCurta)
+            EstadoTimer.PAUSA_LONGA -> notificar(tituloNotificacao, textoNotificacaoPausaLonga)
+            else -> {} // Não notificar para outros estados
+        }
+    }
+
+
+    //cria o canal de notificação
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.channel_name)
+            val descriptionText = getString(R.string.channel_description)
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel("Channel_01", "Channel 01", importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system.
+            val notificationManager: NotificationManager = requireContext()
+                .getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+
+    private fun notificar(titulo: String, texto: String) {
+        val builder = NotificationCompat.Builder(requireContext(), "Channel_01")
+            .setSmallIcon(R.drawable.ic_timer)
+            .setContentTitle(titulo)
+            .setContentText(texto)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+
+        with(NotificationManagerCompat.from(requireContext())) {
+            if (ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+
+                return@with
+            }
+            // notificationId is a unique int for each notification that you must define.
+            notify(1, builder.build())
+        }
+    }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

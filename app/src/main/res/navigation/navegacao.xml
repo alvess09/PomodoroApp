@@ -2,4 +2,60 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navegacao" />
+    android:id="@+id/navegacao"
+    app:startDestination="@id/fragment_home">
+    <fragment
+        android:id="@+id/fragment_home"
+        android:name="alves.ariel.pomodoroapp.presentation.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_fragment_home_to_fragment_tasks"
+            app:destination="@id/fragment_tasks" />
+        <action
+            android:id="@+id/action_fragment_home_to_fragment_edit_tasks"
+            app:destination="@id/fragment_edit_tasks" />
+        <action
+            android:id="@+id/action_fragment_home_to_fragment_profile"
+            app:destination="@id/fragment_profile" />
+        <action
+            android:id="@+id/action_fragment_home_to_fragment_settings"
+            app:destination="@id/fragment_settings" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_tasks"
+        android:name="alves.ariel.pomodoroapp.presentation.tasks.TasksFragment"
+        android:label="fragment_tasks"
+        tools:layout="@layout/fragment_tasks" >
+        <action
+            android:id="@+id/action_fragment_tasks_to_fragment_home"
+            app:destination="@id/fragment_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_edit_tasks"
+        android:name="alves.ariel.pomodoroapp.presentation.edit.EditTasksFragment"
+        android:label="fragment_edit_tasks"
+        tools:layout="@layout/fragment_edit_tasks" >
+        <action
+            android:id="@+id/action_fragment_edit_tasks_to_fragment_home"
+            app:destination="@id/fragment_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_settings"
+        android:name="alves.ariel.pomodoroapp.presentation.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_fragment_settings_to_fragment_home"
+            app:destination="@id/fragment_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_profile"
+        android:name="alves.ariel.pomodoroapp.presentation.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_fragment_profile_to_fragment_home"
+            app:destination="@id/fragment_home" />
+    </fragment>
+</navigation>
