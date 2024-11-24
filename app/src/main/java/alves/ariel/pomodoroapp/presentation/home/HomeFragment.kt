@@ -105,6 +105,7 @@ class HomeFragment : Fragment() {
         binding.btnPomodoro.setOnClickListener {
             viewModel.pomodoro()
             viewModel.pomodorosConcluidos = 0
+            viewModel.alterarEstadoBotaoPlay(EstadoBotao.STOPPED)
             atualizaProgresso(0f)
             configuraTempoInicialTela()
         }
@@ -112,6 +113,7 @@ class HomeFragment : Fragment() {
         binding.btnPausaCurta.setOnClickListener {
             viewModel.pausaCurta()
             viewModel.pomodorosConcluidos = 0
+            viewModel.alterarEstadoBotaoPlay(EstadoBotao.STOPPED)
             atualizaProgresso(0f)
             configuraTempoInicialTela()
         }
@@ -119,6 +121,7 @@ class HomeFragment : Fragment() {
         binding.btnPausaLonga.setOnClickListener {
             viewModel.pausaLonga()
             viewModel.pomodorosConcluidos = 0
+            viewModel.alterarEstadoBotaoPlay(EstadoBotao.STOPPED)
             atualizaProgresso(0f)
             configuraTempoInicialTela()
         }
