@@ -1,5 +1,6 @@
 package alves.ariel.pomodoroapp.presentation.home
 
+import alves.ariel.pomodoroapp.R
 import alves.ariel.pomodoroapp.presentation.home.EstadoTimer.PAUSA_CURTA
 import alves.ariel.pomodoroapp.presentation.home.EstadoTimer.PAUSA_LONGA
 import alves.ariel.pomodoroapp.presentation.home.EstadoTimer.POMODORO
@@ -22,53 +23,69 @@ enum class EstadoTimer {
     PAUSA_LONGA
 }
 
-interface TimerListener {
-    fun onTimerFinished(estado: EstadoTimer)
-}
 
-class HomeViewModel : ViewModel(), TimerListener {
+
+class HomeViewModel : ViewModel() {
 
     private val timer = Timer()
-    private val _estadoPomodoro = MutableLiveData(0)
+    private val _estadoFinalizacao = MutableLiveData<EstadoTimer>()
     private val _tempoRestante = MutableLiveData<String>()
     private val _progresso = MutableLiveData(0f)
+    private val _estadoTexto =MutableLiveData<String>()
+    private val _tituloTarefa = MutableLiveData<String>()
+    private val _notificacao = MutableLiveData<Pair<Int,Int>>()
     private var estadoAtual = POMODORO
     private val pomodoro = timer._pomodoro
     private val pausaCurta = timer._pausaCurta
     private val pausaLonga = timer._pausaLonga
+    val estadoTexto: LiveData<String> = _estadoTexto
+    val tituloTarefa: LiveData<String> = _tituloTarefa
     val tempoRestante: LiveData<String> = _tempoRestante
     val progresso: LiveData<Float> = _progresso
-    val estadoPomodoro: LiveData<Int> = _estadoPomodoro
-    var pomodorosConcluidos = 0
+    val estadoFinalizacao: LiveData<EstadoTimer> = _estadoFinalizacao
+    val notificacao: LiveData<Pair<Int,Int>> = _notificacao
+    var pomodorosConcluidos = 0  //variavel que armazena o progresso de pomodoros concluídos
     var _contador: CountDownTimer? = null
     var tempoInicial = pomodoro
-    var listener: TimerListener? = null
 
 
+    private fun enviarNotificacao(titulo: Int, texto: Int) {
+        _notificacao.value = Pair(titulo, texto)
 
-    override fun onTimerFinished(estado: EstadoTimer) {
+    }
+
+
+    fun onTimerFinished(estado: EstadoTimer) {
+        Log.d("onFinished", " homeViewModel onTimerFinished: $estado")
+        _estadoFinalizacao.value = estado
         when (estado) {
             POMODORO -> {
                 pomodorosConcluidos++
-                if(pomodorosConcluidos%4==0) {
+                if(pomodorosConcluidos==4) {
                     estadoAtual = PAUSA_LONGA
                     pausaLonga()
+                    enviarNotificacao(R.string.titulo_notificacao, R.string.texto_notificacao_pl)
                 } else {
                     estadoAtual = PAUSA_CURTA
                     pausaCurta()
+                    enviarNotificacao(R.string.titulo_notificacao,R.string.texto_notificacao_pc)
                 }
+                Log.d("pomodoros concluidos", "Pomodoros concluídos: $pomodorosConcluidos")
             }
             PAUSA_CURTA -> {
                 estadoAtual = POMODORO
                 pomodoro()
+                enviarNotificacao(R.string.titulo_notificacao,R.string.texto_notificacao)
             }
             PAUSA_LONGA -> {
-                estadoAtual = POMODORO
-                pomodoro()
                 pomodorosConcluidos = 0
+                estadoAtual = POMODORO
+                enviarNotificacao(R.string.titulo_notificacao,R.string.texto_notificacao)
+                pomodoro()
             }
         }
     }
+
 
     // Função para criar um novo contador
     private fun criarContador(tempoEmMilissegundos: Long): CountDownTimer {
@@ -90,8 +107,9 @@ class HomeViewModel : ViewModel(), TimerListener {
             }
 
             override fun onFinish() {
-                listener?.onTimerFinished(estadoAtual)
-                Log.d("HomeViewModel", "Estado do timer antes de chamar o listener: $estadoAtual")
+               onTimerFinished(estadoAtual)
+                Log.d("onFinished", " homeViewModel criarContador onTimerFinished: $estadoAtual")
+
             }
 
 
@@ -108,25 +126,34 @@ class HomeViewModel : ViewModel(), TimerListener {
 
     }
 
+    //  Funções de configuração de tempos para Pomodoro, Pausa Curta e Pausa Longa
     fun pomodoro() {
         defineTimer(pomodoro)
         tempoInicial = pomodoro
-        _estadoPomodoro.value = 0
+
+        (estadoTexto as MutableLiveData).value = "Pomodoro ${pomodorosConcluidos + 1}º"
+
     }
 
     fun pausaCurta() {
         defineTimer(pausaCurta)
         tempoInicial = pausaCurta
-        _estadoPomodoro.value = 1
-        Log.d("HomeViewModel", "Estado do timer: $estadoAtual")
+
+        (estadoTexto as MutableLiveData).value = "Pausa Curta"
+
     }
 
     fun pausaLonga() {
         defineTimer(pausaLonga)
         tempoInicial = pausaLonga
-        _estadoPomodoro.value = 2
+
+        (estadoTexto as MutableLiveData).value = "Pausa Longa"
     }
 
+    fun startTimer() {
+        _contador?.start()
+
+    }
 
 
 

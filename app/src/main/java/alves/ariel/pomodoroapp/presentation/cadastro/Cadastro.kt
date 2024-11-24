@@ -17,6 +17,7 @@ class Cadastro : AppCompatActivity() {
     private var auth: FirebaseAuth = Firebase.auth
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityCadastroBinding.inflate(layoutInflater)

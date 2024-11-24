@@ -22,6 +22,6 @@
     <string name="login_com_conta_google">Login com conta google</string>
     <string name="login_com_conta_facebook">login com conta facebook</string>
     <string name="login_com_conta_apple">login com conta apple</string>
-    <string name="channel_name">Canal Notificação Pomodoro</string>
+    <string name="channel_name">Notificação PomodoroApp</string>
     <string name="channel_description">Canal de notificação de pomodoros concluídos</string>
 </resources>

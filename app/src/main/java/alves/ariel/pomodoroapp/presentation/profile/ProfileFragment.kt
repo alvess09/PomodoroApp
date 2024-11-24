@@ -4,6 +4,7 @@ import alves.ariel.pomodoroapp.R
 import alves.ariel.pomodoroapp.data.Usuario
 import alves.ariel.pomodoroapp.databinding.FragmentProfileBinding
 import alves.ariel.pomodoroapp.domain.Navegacao
+import alves.ariel.pomodoroapp.presentation.home.HomeViewModel
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 
@@ -30,6 +32,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         "Pague-me um Café",
         "Privacidade"
     )
+    private val viewModel: HomeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

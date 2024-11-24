@@ -2,9 +2,11 @@ package alves.ariel.pomodoroapp.presentation
 
 import alves.ariel.pomodoroapp.R
 import alves.ariel.pomodoroapp.databinding.ActivityMainBinding
+import alves.ariel.pomodoroapp.presentation.home.HomeViewModel
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.Firebase
@@ -16,6 +18,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val auth: FirebaseAuth = Firebase.auth
     private lateinit var bottom_nav: AnimatedBottomBar
+
+    //instância do viewModel para ser acessado por todos os fragments
+    val viewModel: HomeViewModel by lazy {
+        ViewModelProvider(this)[HomeViewModel::class.java]
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

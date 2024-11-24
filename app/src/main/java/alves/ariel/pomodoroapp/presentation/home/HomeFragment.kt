@@ -10,7 +10,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,16 +18,14 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 
-class HomeFragment : Fragment(), TimerListener {
+class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: HomeViewModel by lazy {
-        ViewModelProvider(this)[HomeViewModel::class.java]
-    }
-    private var contador: CountDownTimer? = null
+    private val viewModel: HomeViewModel by activityViewModels()
+
 
 
     override fun onCreateView(
@@ -39,66 +36,56 @@ class HomeFragment : Fragment(), TimerListener {
         return binding.root
 
 
+
     }
 
     @SuppressLint("DefaultLocale", "SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        contador = viewModel._contador
-        createNotificationChannel()
 
-        viewModel.listener = this
 
-        // Inicia o contador com o tempo padrão do btnPomodoro
-        viewModel.pomodoro()
 
-        //Configura tempo inicial na tela
-        configuraTempoInicialTela()
 
-        //define o timer na tela
+        // inicia o contador apenas se ele já não estiver ativo
+        if (viewModel._contador == null){
+            // Inicia o contador com o tempo padrão do btnPomodoro
+            viewModel.pomodoro()
+            configuraTempoInicialTela()
+        }
+
+        //observa o tempo restante e atualiza a UI
         viewModel.tempoRestante.observe(viewLifecycleOwner) { novoTempo ->
             binding.tvTimer.text = novoTempo
         }
 
+        viewModel.estadoFinalizacao.observe(viewLifecycleOwner) { estado ->
+            onTimerFinished(estado)
+        }
+
+        //observa o progresso e atualiza a barra de progresso
         viewModel.progresso.observe(viewLifecycleOwner) { novoProgresso ->
             atualizaProgresso(novoProgresso)
         }
 
-        viewModel.estadoPomodoro.observe(viewLifecycleOwner) { novoEstado ->
-            Log.d(
-                "estadoPomodoro",
-                "Estado Pomodoro: $novoEstado Pomodoros concluídos: ${viewModel.pomodorosConcluidos}"
-            )
-//
-            val tituloTimerPausaCurta = getString(R.string.pausa_curta)
-            val tituloTimerPausaLonga = getString(R.string.pausa_longa)
+       viewModel.estadoTexto.observe(viewLifecycleOwner) { estado ->
+           binding.tvTask.text = estado
+       }
 
-            when (novoEstado) {
-                0 -> {
-                    binding.tvTask.text = "Pomodoro${
-                        viewModel
-                            .pomodorosConcluidos + 1
-                    }º"
-                    configuraTempoInicialTela()
-                }
+       viewModel.notificacao.observe(viewLifecycleOwner){ notificacao ->
+           notificacao?.let {
+               val (tituloResId, textoResId) = notificacao
+               val titulo = getString(tituloResId)
+               val texto = getString(textoResId)
+               exibirNotificacao(titulo, texto)
+           }
 
-                1 -> {
-                    binding.tvTask.text = tituloTimerPausaCurta
-                    configuraTempoInicialTela()
+       }
 
-                }
 
-                2 -> {
-                    binding.tvTask.text = tituloTimerPausaLonga
-                    configuraTempoInicialTela()
-
-                }
-            }
-        }
+        //Cria o canal de notiicações
+        createNotificationChannel()
         //Configura Timer geral
         configuraTimer()
-
-
     }
 
 
@@ -118,12 +105,14 @@ class HomeFragment : Fragment(), TimerListener {
             atualizaProgresso(0f)
             configuraTempoInicialTela()
         }
+
         binding.btnPausaCurta.setOnClickListener {
             viewModel.pausaCurta()
             viewModel.pomodorosConcluidos = 0
             atualizaProgresso(0f)
             configuraTempoInicialTela()
         }
+
         binding.btnPausaLonga.setOnClickListener {
             viewModel.pausaLonga()
             viewModel.pomodorosConcluidos = 0
@@ -131,10 +120,14 @@ class HomeFragment : Fragment(), TimerListener {
             configuraTempoInicialTela()
         }
 
+        val estadoBtnPlay:Int = 1
+        if (estadoBtnPlay !=1){
 
-        //iniciar quando o btn_play for clicado
+        }
+
+        //configurações botões play e stop
         binding.fabPlay.setOnClickListener {
-            viewModel._contador?.start()
+            viewModel.startTimer()
             viewModel.progresso.value?.let { atualizaProgresso(it) }
 
             Log.d("progresso btnPlay", "configuraTimer: ${viewModel.progresso}")
@@ -144,10 +137,9 @@ class HomeFragment : Fragment(), TimerListener {
         binding.fabStop.setOnClickListener {
             // Cancela o contador quando o btn_stop for clicado e define o tempo
             // inicial na tela de acordo com o tempo padrão do momento
-            contador?.cancel()
+            viewModel._contador?.cancel()
             viewModel.defineTimer(viewModel.tempoInicial)
             configuraTempoInicialTela()
-
             //zera o progresso da circleBar
             atualizaProgresso(0f)
             Log.i("progresso btnPause", "configuraTimer: ${viewModel.progresso}")
@@ -156,7 +148,6 @@ class HomeFragment : Fragment(), TimerListener {
     }
 
     private fun atualizaProgresso(progresso: Float) {
-
         val circularProgressBar = binding.circularProgressBar
         circularProgressBar.progress = progresso
         Log.i("progresso", "atualizaProgresso: $progresso")
@@ -164,21 +155,35 @@ class HomeFragment : Fragment(), TimerListener {
 
     @SuppressLint("DefaultLocale")
     private fun configuraTempoInicialTela() {
-        val tempoinicial: Int = viewModel.tempoInicial
-        val tempoFormatado: String = String.format("%02d:00", tempoinicial)
-        binding.tvTimer.text = tempoFormatado
-        Log.i("tempo em tela", "configuraTempoInicialTela: $tempoFormatado")
+            val tempoinicial: Int = viewModel.tempoInicial
+            val tempoFormatado: String = String.format("%02d:00", tempoinicial)
+            binding.tvTimer.text = tempoFormatado
+            Log.i("tempo em tela", "configuraTempoInicialTela: $tempoFormatado")
+
     }
 
-    override fun onTimerFinished(estado: EstadoTimer) {
-        val tituloNotificacao = getString(R.string.titulo_notificacao)
-        val textoNotificacaoPausaCurta = getString(R.string.texto_notificacao)
-        val textoNotificacaoPausaLonga = getString(R.string.texto_notificacao_pl)
+
+    private fun onTimerFinished(estado:EstadoTimer) {
+
+        Log.d("onFinished", " homeFragment onTimerFinished: $estado")
         when (estado) {
-            EstadoTimer.PAUSA_CURTA -> notificar(tituloNotificacao, textoNotificacaoPausaCurta)
-            EstadoTimer.PAUSA_LONGA -> notificar(tituloNotificacao, textoNotificacaoPausaLonga)
-            else -> {} // Não notificar para outros estados
+            EstadoTimer.POMODORO -> {
+                viewModel.pausaCurta() // Transição para pausa curta
+                configuraTempoInicialTela() // Atualiza a tela para o tempo inicial da pausa curta
+                atualizaProgresso(0f) // Zera a barra de progresso
+            }
+            EstadoTimer.PAUSA_CURTA -> {
+                viewModel.pomodoro() // Transição de volta para o Pomodoro
+                configuraTempoInicialTela() // Atualiza a tela para o tempo inicial do Pomodoro
+                atualizaProgresso(0f) // Zera a barra de progresso
+            }
+            EstadoTimer.PAUSA_LONGA -> {
+                viewModel.pomodoro() // Transição de volta para o Pomodoro
+                configuraTempoInicialTela() // Atualiza a tela para o tempo inicial do Pomodoro
+                atualizaProgresso(0f) // Zera a barra de progresso
+            }
         }
+
     }
 
 
@@ -188,7 +193,7 @@ class HomeFragment : Fragment(), TimerListener {
             val name = getString(R.string.channel_name)
             val descriptionText = getString(R.string.channel_description)
             val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel("Channel_01", "Channel 01", importance).apply {
+            val channel = NotificationChannel("Channel_01", name, importance).apply {
                 description = descriptionText
             }
             // Register the channel with the system.
@@ -199,7 +204,7 @@ class HomeFragment : Fragment(), TimerListener {
     }
 
 
-    private fun notificar(titulo: String, texto: String) {
+    private fun exibirNotificacao(titulo: String, texto: String) {
         val builder = NotificationCompat.Builder(requireContext(), "Channel_01")
             .setSmallIcon(R.drawable.ic_timer)
             .setContentTitle(titulo)
