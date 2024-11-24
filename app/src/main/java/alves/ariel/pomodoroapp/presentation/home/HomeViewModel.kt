@@ -22,7 +22,11 @@ enum class EstadoTimer {
     PAUSA_CURTA,
     PAUSA_LONGA
 }
-
+enum class EstadoBotao{
+    STOPPED,
+    RUNNING,
+    PAUSED
+}
 
 
 class HomeViewModel : ViewModel() {
@@ -31,19 +35,22 @@ class HomeViewModel : ViewModel() {
     private val _estadoFinalizacao = MutableLiveData<EstadoTimer>()
     private val _tempoRestante = MutableLiveData<String>()
     private val _progresso = MutableLiveData(0f)
-    private val _estadoTexto =MutableLiveData<String>()
+    private val _estadoTexto = MutableLiveData<String>()
     private val _tituloTarefa = MutableLiveData<String>()
-    private val _notificacao = MutableLiveData<Pair<Int,Int>>()
+    private val _notificacao = MutableLiveData<Pair<Int, Int>>()
+    private val _estadoBotaoPlay = MutableLiveData(EstadoBotao.STOPPED)
     private var estadoAtual = POMODORO
     private val pomodoro = timer._pomodoro
     private val pausaCurta = timer._pausaCurta
     private val pausaLonga = timer._pausaLonga
+    private var tempoRestanteEmMilissegundos: Long = 0L
     val estadoTexto: LiveData<String> = _estadoTexto
     val tituloTarefa: LiveData<String> = _tituloTarefa
     val tempoRestante: LiveData<String> = _tempoRestante
     val progresso: LiveData<Float> = _progresso
     val estadoFinalizacao: LiveData<EstadoTimer> = _estadoFinalizacao
-    val notificacao: LiveData<Pair<Int,Int>> = _notificacao
+    val notificacao: LiveData<Pair<Int, Int>> = _notificacao
+    val estadoBotaoPlay:LiveData<EstadoBotao> = _estadoBotaoPlay
     var pomodorosConcluidos = 0  //variavel que armazena o progresso de pomodoros concluídos
     var _contador: CountDownTimer? = null
     var tempoInicial = pomodoro
@@ -61,26 +68,28 @@ class HomeViewModel : ViewModel() {
         when (estado) {
             POMODORO -> {
                 pomodorosConcluidos++
-                if(pomodorosConcluidos==4) {
+                if (pomodorosConcluidos == 4) {
                     estadoAtual = PAUSA_LONGA
                     pausaLonga()
                     enviarNotificacao(R.string.titulo_notificacao, R.string.texto_notificacao_pl)
                 } else {
                     estadoAtual = PAUSA_CURTA
                     pausaCurta()
-                    enviarNotificacao(R.string.titulo_notificacao,R.string.texto_notificacao_pc)
+                    enviarNotificacao(R.string.titulo_notificacao, R.string.texto_notificacao_pc)
                 }
                 Log.d("pomodoros concluidos", "Pomodoros concluídos: $pomodorosConcluidos")
             }
+
             PAUSA_CURTA -> {
                 estadoAtual = POMODORO
                 pomodoro()
-                enviarNotificacao(R.string.titulo_notificacao,R.string.texto_notificacao)
+                enviarNotificacao(R.string.titulo_notificacao, R.string.texto_notificacao)
             }
+
             PAUSA_LONGA -> {
                 pomodorosConcluidos = 0
                 estadoAtual = POMODORO
-                enviarNotificacao(R.string.titulo_notificacao,R.string.texto_notificacao)
+                enviarNotificacao(R.string.titulo_notificacao, R.string.texto_notificacao)
                 pomodoro()
             }
         }
@@ -93,6 +102,7 @@ class HomeViewModel : ViewModel() {
             // Função chamada a cada intervalo de tempo
             @SuppressLint("DefaultLocale")
             override fun onTick(millisUntilFinished: Long) {
+                tempoRestanteEmMilissegundos = millisUntilFinished
                 val segundosRestantes = millisUntilFinished / 1000
                 val minutos = segundosRestantes / 60
                 val segundos = segundosRestantes % 60
@@ -101,15 +111,13 @@ class HomeViewModel : ViewModel() {
                 _progresso.value =
                     ((tempoEmMilissegundos - millisUntilFinished).toFloat() / tempoEmMilissegundos.toFloat()) * 100
 
-                println("Tempo restante: $minutos minutos e $segundos segundos")
-
-
+                Log.d("Tempo restante", "Tempo restante: $minutos minutos e $segundos segundos")
             }
 
             override fun onFinish() {
-               onTimerFinished(estadoAtual)
+                onTimerFinished(estadoAtual)
                 Log.d("onFinished", " homeViewModel criarContador onTimerFinished: $estadoAtual")
-
+                alterarEstadoBotaoPlay(EstadoBotao.STOPPED)
             }
 
 
@@ -121,10 +129,15 @@ class HomeViewModel : ViewModel() {
         // Cancela o contador atual, se houver
         _contador?.cancel()
         val tempoEmMilissegundos = tempo * 60 * 1000
+        tempoRestanteEmMilissegundos = tempoEmMilissegundos.toLong()
         _contador = criarContador(tempoEmMilissegundos.toLong())
 
-
     }
+
+    fun alterarEstadoBotaoPlay(novoEstado:EstadoBotao){
+        _estadoBotaoPlay.value = novoEstado
+    }
+
 
     //  Funções de configuração de tempos para Pomodoro, Pausa Curta e Pausa Longa
     fun pomodoro() {
@@ -150,11 +163,32 @@ class HomeViewModel : ViewModel() {
         (estadoTexto as MutableLiveData).value = "Pausa Longa"
     }
 
+    //sobre as Funções dos botões
+
+    // STOPPED: O botão mostra o ícone ic_play, chama startTimer e muda o estado para RUNNING.
+    //RUNNING: O botão mostra o ícone ic_pause, chama pauseTimer e muda o estado para PAUSED.
+    //PAUSED: O botão mostra o ícone ic_play, chama resumeTimer e muda o estado para RUNNING.
+    //Quando o timer finalizar, o botão volta para o estado inicial (STOPPED).
+
     fun startTimer() {
         _contador?.start()
 
     }
 
+    fun pauseTimer() {
+        _contador?.cancel()
+        Log.d("Timer", "Contador pausado. Tempo restante: $tempoRestanteEmMilissegundos ms")
+    }
+
+    fun resumeTimer() {
+        _contador = criarContador(tempoRestanteEmMilissegundos)
+        _contador?.start()
+        Log.d("Timer", "Contador retomado. Tempo restante: $tempoRestanteEmMilissegundos ms ")
+    }
+    fun cancelTimer() {
+        _contador?.cancel()
+        defineTimer(tempoInicial)
+    }
 
 
 }

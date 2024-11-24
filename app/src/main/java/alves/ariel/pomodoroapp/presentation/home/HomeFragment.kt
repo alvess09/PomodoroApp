@@ -79,6 +79,9 @@ class HomeFragment : Fragment() {
                exibirNotificacao(titulo, texto)
            }
 
+
+
+
        }
 
 
@@ -120,25 +123,41 @@ class HomeFragment : Fragment() {
             configuraTempoInicialTela()
         }
 
-        val estadoBtnPlay:Int = 1
-        if (estadoBtnPlay !=1){
 
-        }
 
         //configurações botões play e stop
-        binding.fabPlay.setOnClickListener {
-            viewModel.startTimer()
-            viewModel.progresso.value?.let { atualizaProgresso(it) }
-
-            Log.d("progresso btnPlay", "configuraTimer: ${viewModel.progresso}")
-
+        viewModel.estadoBotaoPlay.observe(viewLifecycleOwner) { estado ->
+            @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
+            when (estado) {
+                EstadoBotao.STOPPED -> {
+                    binding.fabPlay.setImageResource(R.drawable.ic_play) // Ícone de play
+                    binding.fabPlay.setOnClickListener {
+                        viewModel.startTimer()
+                        viewModel.alterarEstadoBotaoPlay(EstadoBotao.RUNNING)
+                    }
+                }
+                EstadoBotao.RUNNING -> {
+                    binding.fabPlay.setImageResource(R.drawable.ic_pause) // Ícone de pause
+                    binding.fabPlay.setOnClickListener {
+                        viewModel.pauseTimer()
+                        viewModel.alterarEstadoBotaoPlay(EstadoBotao.PAUSED)
+                    }
+                }
+                EstadoBotao.PAUSED -> {
+                    binding.fabPlay.setImageResource(R.drawable.ic_play) // Ícone de play
+                    binding.fabPlay.setOnClickListener {
+                        viewModel.resumeTimer()
+                        viewModel.alterarEstadoBotaoPlay(EstadoBotao.RUNNING)
+                    }
+                }
+            }
         }
 
         binding.fabStop.setOnClickListener {
             // Cancela o contador quando o btn_stop for clicado e define o tempo
             // inicial na tela de acordo com o tempo padrão do momento
-            viewModel._contador?.cancel()
-            viewModel.defineTimer(viewModel.tempoInicial)
+            viewModel.cancelTimer()
+            viewModel.alterarEstadoBotaoPlay(EstadoBotao.STOPPED)
             configuraTempoInicialTela()
             //zera o progresso da circleBar
             atualizaProgresso(0f)
