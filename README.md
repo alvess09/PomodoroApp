@@ -40,7 +40,10 @@ ou que estão ansiosas porque não conseguem organizar suas atividades.
 4. Firebase - Authentication & Analitics  https://firebase.google.com/?hl=pt-br
 5. Circle Image View - https://github.com/hdodenhof/CircleImageView
 6. CircularProgressBar https://github.com/lopspower/CircularProgressBar
+7. Navigation
+8. ViewModel
+
 
 
 ***Deus seja louvado*** 
-
+***God be Praised***
